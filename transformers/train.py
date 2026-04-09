@@ -6,7 +6,7 @@ import pickle
 dataset = load_dataset("wmt14", "de-en")["train"]
 
 src_tgt = []
-for idx in range(100000, 200000):
+for idx in range(0, 400000):
     sample = dataset[idx]["translation"]
     src_tgt.append((sample["de"], sample["en"]))
 
@@ -17,5 +17,6 @@ transformer = Transformer( data="data/preprocessed/wmt14.data",
                           lr=0.003,
                           embedding_dim=128,
                           n_attentionheads=4,
-                          max_epoch=15 )
+                          max_epoch=20, 
+                          device="cuda")
 transformer.fit()

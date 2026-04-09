@@ -9,7 +9,8 @@ import torch
 import time
 
 class Transformer:
-    def __init__(self, data, batch_size=1, max_seq_len=10, embedding_dim=32, n_attentionheads=4, lr=0.01, max_epoch=50):
+    def __init__(self, data, batch_size=1, max_seq_len=10,
+                  embedding_dim=32, n_attentionheads=4, lr=0.01, max_epoch=50, device="mps"):
         with open(data, "rb") as f: en_de_pairs = pickle.load(f)[20000:60000]
         self.max_epoch = max_epoch
 
@@ -17,7 +18,7 @@ class Transformer:
         self.dataset = TranslationDataset(self.vocab, max_seq_len=10)
         self.loader = DataLoader(self.dataset, batch_size=batch_size, shuffle=True)
 
-        self.device = torch.device("cuda") # MPS auf mac ist irgendwie langsamer
+        self.device = torch.device(device) # MPS auf mac ist irgendwie langsamer
 
         self.decoder = Decoder(vocab_size=self.vocab._vocab_size, 
                                emb_dim=embedding_dim, 
