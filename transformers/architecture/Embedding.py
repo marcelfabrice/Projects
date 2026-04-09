@@ -13,7 +13,7 @@ class Embedding(nn.Module):
 
         tok = self.token_embedding(x)  # (seq_len, emb_dim)
 
-        positions = torch.arange(T)
+        positions = torch.arange(T, device=x.device, dtype=torch.long)
         pos = self.position_embedding(positions)  # (T, E)
 
         return tok + pos  # (T, E)
