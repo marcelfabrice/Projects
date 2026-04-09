@@ -17,7 +17,7 @@ class Transformer:
         self.dataset = TranslationDataset(self.vocab, max_seq_len=10)
         self.loader = DataLoader(self.dataset, batch_size=batch_size, shuffle=True)
 
-        self.device = torch.device("mps") # MPS auf mac ist irgendwie langsamer
+        self.device = torch.device("cuda") # MPS auf mac ist irgendwie langsamer
 
         self.decoder = Decoder(vocab_size=self.vocab._vocab_size, 
                                emb_dim=embedding_dim, 
