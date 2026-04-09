@@ -22,13 +22,10 @@ with open("cleaned.txt", "r", encoding="utf-8") as f:
     for line in f:
         line = line.strip()
 
-        # Split bei Satzende (. ! ?)
         sentences = re.split(r"[.!?]", line)
 
-        # leere Strings entfernen
         sentences = [s.strip() for s in sentences if s.strip()]
 
-        # nur wenn genau 2 Sätze vorhanden
         if len(sentences) >= 2:
             pairs.append((sentences[0], sentences[1]))
 

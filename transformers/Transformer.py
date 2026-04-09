@@ -9,16 +9,17 @@ import torch
 import time
 
 class Transformer:
-    def __init__(self, data, batch_size=1, max_seq_len=10, embedding_dim=32, n_attentionheads=4, lr=0.01):
-        with open(data, "rb") as f: en_de_pairs = pickle.load(f)[:10000]
+    def __init__(self, data, batch_size=1, max_seq_len=10, embedding_dim=32, n_attentionheads=4, lr=0.01, max_epoch=50):
+        with open(data, "rb") as f: en_de_pairs = pickle.load(f)[20000:60000]
+        self.max_epoch = max_epoch
 
         self.vocab = Vocabulary(en_de_pairs)
         self.dataset = TranslationDataset(self.vocab, max_seq_len=10)
         self.loader = DataLoader(self.dataset, batch_size=batch_size, shuffle=True)
 
-        self.device = torch.device("cpu") # MPS auf mac ist irgendwie langsamer
+        self.device = torch.device("mps") # MPS auf mac ist irgendwie langsamer
 
-        self.decoder = Decoder(self.vocab._vocab_size, 
+        self.decoder = Decoder(vocab_size=self.vocab._vocab_size, 
                                emb_dim=embedding_dim, 
                                max_seq_len=max_seq_len, 
                                n_attentionheads=n_attentionheads).to(self.device)
@@ -26,10 +27,10 @@ class Transformer:
         self.lossfn = nn.CrossEntropyLoss(ignore_index=self.vocab.WordToIdx("<pad>"))
         self.optim = torch.optim.AdamW(self.decoder.parameters(), lr=lr)
 
-        print("Running on device:", self.device)
+        print("device: ", self.device)
 
     def fit(self):
-        for epoch in range(50):
+        for epoch in range(self.max_epoch):
             start = time.time()
             total_loss, ind = 0, 0
             for src, tgt_in, tgt_out in self.loader:
@@ -87,6 +88,3 @@ class Transformer:
 
         print("Output:", " ".join(translated))
 
-
-#transformer = Transformer(data="data/preprocessed/translation.data", batch_size=32, lr=0.005)
-#transformer.fit()
