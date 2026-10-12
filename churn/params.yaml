@@ -1,0 +1,16 @@
+split:
+  test_size: 0.2
+  random_state: 42
+
+baseline:
+  max_iter: 1500
+
+model:
+  k: 250
+  weights: 'distance'
+  metric: 'minkowski'
+
+hpo:
+  trials: 2
+  k-lower: 50
+  k-upper: 400

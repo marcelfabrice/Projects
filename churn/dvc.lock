@@ -1,0 +1,92 @@
+schema: '2.0'
+stages:
+  clean:
+    cmd: python src/mlt/data/clean.py
+    deps:
+    - path: data/raw/telco_data.csv
+      hash: md5
+      md5: 502dbab8e0df730e30d73900b1cf49bb
+      size: 977061
+    - path: src/mlt/data/clean.py
+      hash: md5
+      md5: 5a8efdb8312081b8736c3a964007b84e
+      size: 2745
+    outs:
+    - path: data/interim/telco_clean.csv
+      hash: md5
+      md5: a3c9c4b2296ba7e8423b24655fe45c28
+      size: 562428
+  train:
+    cmd: python src/mlt/models/model_fit.py
+    deps:
+    - path: data/interim/telco_clean.csv
+      hash: md5
+      md5: a3c9c4b2296ba7e8423b24655fe45c28
+      size: 562428
+    - path: params.yaml
+      hash: md5
+      md5: 4b03e01bd81a54cb86f550c63e595c57
+      size: 179
+    - path: src/mlt/data/clean.py
+      hash: md5
+      md5: 5a8efdb8312081b8736c3a964007b84e
+      size: 2745
+    - path: src/mlt/models/metrics.py
+      hash: md5
+      md5: 613f13b055713dc8bfe0ba6df215c7c2
+      size: 1249
+    - path: src/mlt/models/model_fit.py
+      hash: md5
+      md5: 94b164e8888436de99b90c1744dea6a9
+      size: 2196
+  baseline:
+    cmd: python src/mlt/models/baseline_fit.py
+    deps:
+    - path: data/interim/telco_clean.csv
+      hash: md5
+      md5: a3c9c4b2296ba7e8423b24655fe45c28
+      size: 562428
+    - path: params.yaml
+      hash: md5
+      md5: 4b03e01bd81a54cb86f550c63e595c57
+      size: 179
+    - path: src/mlt/data/preprocessing.py
+      hash: md5
+      md5: 2f0c4865e52ab2a4db6e4b6b51bfd2d8
+      size: 1814
+    - path: src/mlt/models/baseline_fit.py
+      hash: md5
+      md5: 30bd8e21ed14b14a5dc03085d1e49b5c
+      size: 1735
+    - path: src/mlt/models/metrics.py
+      hash: md5
+      md5: 613f13b055713dc8bfe0ba6df215c7c2
+      size: 1249
+  hpo:
+    cmd: python src/mlt/models/hpo.py
+    deps:
+    - path: data/interim/telco_clean.csv
+      hash: md5
+      md5: a3c9c4b2296ba7e8423b24655fe45c28
+      size: 562428
+    - path: src/mlt/data/preprocessing.py
+      hash: md5
+      md5: 2f0c4865e52ab2a4db6e4b6b51bfd2d8
+      size: 1814
+    - path: src/mlt/models/hpo.py
+      hash: md5
+      md5: f074439fbf8f8251514f18d70663f9b7
+      size: 2621
+    - path: src/mlt/models/metrics.py
+      hash: md5
+      md5: 613f13b055713dc8bfe0ba6df215c7c2
+      size: 1249
+    - path: src/mlt/models/model_fit.py
+      hash: md5
+      md5: 94b164e8888436de99b90c1744dea6a9
+      size: 2196
+    outs:
+    - path: models/best_knn_model.joblib
+      hash: md5
+      md5: ac96c3a84625c2067b61ad968aeac633
+      size: 1410527

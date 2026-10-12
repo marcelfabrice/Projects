@@ -1,0 +1,5 @@
+outs:
+- md5: 69a099782243c295938dc07ca75d564a
+  size: 638164
+  hash: md5
+  path: uv.lock

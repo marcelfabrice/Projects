@@ -18,5 +18,5 @@ transformer = Transformer( data="data/preprocessed/wmt14.data",
                           embedding_dim=128,
                           n_attentionheads=4,
                           max_epoch=20, 
-                          device="cuda")
+                          device="mps")
 transformer.fit()

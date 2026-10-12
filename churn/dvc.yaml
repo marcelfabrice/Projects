@@ -1,0 +1,35 @@
+stages:
+  clean:
+    cmd: python src/mlt/data/clean.py
+    deps:
+      - src/mlt/data/clean.py
+      - data/raw/telco_data.csv
+    outs:
+      - data/interim/telco_clean.csv
+
+  baseline:
+    cmd: python src/mlt/models/baseline_fit.py
+    deps:
+      - src/mlt/models/baseline_fit.py
+      - src/mlt/models/metrics.py
+      - src/mlt/data/preprocessing.py
+      - data/interim/telco_clean.csv
+      - params.yaml
+  train:
+    cmd: python src/mlt/models/model_fit.py
+    deps:
+      - src/mlt/models/model_fit.py
+      - src/mlt/models/metrics.py
+      - src/mlt/data/clean.py
+      - data/interim/telco_clean.csv
+      - params.yaml
+  hpo:
+    cmd: python src/mlt/models/hpo.py
+    deps:
+      - src/mlt/models/hpo.py
+      - src/mlt/models/model_fit.py
+      - src/mlt/models/metrics.py
+      - data/interim/telco_clean.csv
+      - src/mlt/data/preprocessing.py
+    outs:
+      - models/best_knn_model.joblib
